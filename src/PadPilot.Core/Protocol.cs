@@ -28,6 +28,8 @@ public struct PadState
 public struct PadOutput
 {
     public byte RumbleStrong, RumbleWeak, R, G, B, PlayerLeds, MicLed;
+    /// <summary>DualSense adaptif tetik paketleri (11 bayt); null = degistirme.</summary>
+    public byte[]? TriggerR, TriggerL;
 }
 
 public static class Crc32
@@ -197,6 +199,8 @@ public static class OutputBuilder
         buf[c + 1] = 0x01 | 0x04 | 0x10;  // valid_flag1: mikrofon LED, isik cubugu, oyuncu LED
         buf[c + 2] = o.RumbleWeak;        // sag (hafif) motor
         buf[c + 3] = o.RumbleStrong;      // sol (agir) motor
+        if (o.TriggerR is { Length: TriggerEffects.Size }) { buf[c] |= 0x04; o.TriggerR.CopyTo(buf[(c + 10)..]); }
+        if (o.TriggerL is { Length: TriggerEffects.Size }) { buf[c] |= 0x08; o.TriggerL.CopyTo(buf[(c + 21)..]); }
         buf[c + 8] = o.MicLed;
         buf[c + 43] = o.PlayerLeds;
         buf[c + 44] = o.R; buf[c + 45] = o.G; buf[c + 46] = o.B;

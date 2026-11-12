@@ -1,0 +1,47 @@
+<UserControl x:Class="PadPilot.App.Pages.MotionPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:PadPilot.App">
+    <StackPanel>
+        <Border Style="{StaticResource Card}">
+            <StackPanel DataContext="{Binding Profile.Gyro}">
+                <TextBlock Text="Gyro ile nişan" Style="{StaticResource H2}" />
+                <local:SettingRow Title="Gyro kullanımı" Description="Fare modu, oyunda pad + fare birlikte destekleniyorsa en hassas sonucu verir.">
+                    <ComboBox ItemsSource="{x:Static local:Choices.GyroModes}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Mode}" Width="240" />
+                </local:SettingRow>
+                <local:SettingRow Title="Ne zaman çalışsın">
+                    <ComboBox ItemsSource="{x:Static local:Choices.GyroActivations}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Activation}" Width="240" />
+                </local:SettingRow>
+                <local:SettingRow Title="Etkinleştirme tuşu" Description="Örnek: L2 (nişan alırken) — çoğu oyunda en doğal kullanım.">
+                    <ComboBox ItemsSource="{x:Static local:Choices.Buttons}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding ActivationButton}" Width="240" />
+                </local:SettingRow>
+                <local:SettingRow Title="Yatay eksen">
+                    <ComboBox ItemsSource="{x:Static local:Choices.GyroAxes}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Axis}" Width="240" />
+                </local:SettingRow>
+                <local:SliderRow Title="Yatay hassasiyet" Minimum="1" Maximum="40" Step="0.5" Format="0.0" Value="{Binding SensX}"
+                                 Description="Pad 1 derece döndüğünde fare kaç piksel kayar." />
+                <local:SliderRow Title="Dikey hassasiyet" Minimum="1" Maximum="40" Step="0.5" Format="0.0" Value="{Binding SensY}" />
+                <local:SliderRow Title="Titreme yumuşatma" Minimum="0" Maximum="3" Step="0.1" Format="0.0" Value="{Binding Smoothing}"
+                                 Description="El titremesi gibi çok küçük hareketleri bastırır; büyük hareketlere dokunmaz." />
+                <local:SliderRow Title="Analog modu gücü" Minimum="0.2" Maximum="3" Step="0.05" Format="x" Value="{Binding StickGain}" />
+                <WrapPanel Margin="0,8,0,0">
+                    <CheckBox Style="{StaticResource Switch}" Content="Yatayı ters çevir" IsChecked="{Binding InvertX}" Margin="0,0,24,0" />
+                    <CheckBox Style="{StaticResource Switch}" Content="Dikeyi ters çevir" IsChecked="{Binding InvertY}" />
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+
+        <Border Style="{StaticResource Card}">
+            <StackPanel>
+                <DockPanel>
+                    <Button DockPanel.Dock="Right" Content="Kalibre et" Click="Calibrate_Click" Style="{StaticResource AccentButton}" />
+                    <StackPanel>
+                        <TextBlock Text="Kalibrasyon" Style="{StaticResource H2}" Margin="0,0,0,2" />
+                        <TextBlock Style="{StaticResource Muted}" Text="PadPilot, pad masada hareketsiz durduğunda sapmayı kendisi düzeltir. İmleç kendi kendine kayarsa pad'i düz bir yere koyup Kalibre et'e bas (1,5 sn)." />
+                    </StackPanel>
+                </DockPanel>
+                <TextBlock Text="{Binding SelectedPad.GyroText}" FontFamily="Cascadia Mono, Consolas" FontSize="12.5" Foreground="{StaticResource MutedBrush}" Margin="0,12,0,0" />
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

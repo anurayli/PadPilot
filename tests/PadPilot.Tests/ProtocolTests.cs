@@ -130,9 +130,78 @@ public class ProtocolTests
     [Fact]
     public void Axis_Conversion_CoversFullRange()
     {
-        Assert.Equal(short.MinValue, XboxBridge.Axis(0));
-        Assert.Equal(short.MaxValue, XboxBridge.Axis(255));
-        Assert.Equal(short.MaxValue, XboxBridge.AxisInverted(0));
-        Assert.Equal(short.MinValue, XboxBridge.AxisInverted(255));
+        Assert.Equal(short.MaxValue, VirtualPads.Axis(1f));
+        Assert.Equal(-short.MaxValue, VirtualPads.Axis(-1f));
+        Assert.Equal(0, VirtualPads.Axis(0f));
+        Assert.Equal(255, VirtualPads.AxisByte(1f, false));
+        Assert.Equal(0, VirtualPads.AxisByte(1f, true));
+        Assert.Equal(-1f, StickMath.Norm(0));
+        Assert.Equal(1f, StickMath.Norm(255));
+    }
+
+    [Fact]
+    public void Stick_Deadzone_And_Outer()
+    {
+        var s = new StickSettings { Deadzone = 0.1, OuterZone = 0.9 };
+        Assert.Equal((0f, 0f), StickMath.Process(0.05f, 0.05f, s));
+        var (x, y) = StickMath.Process(0.95f, 0f, s);
+        Assert.Equal(1f, x, 3); Assert.Equal(0f, y, 3);
+        var (hx, _) = StickMath.Process(0.5f, 0f, s);
+        Assert.Equal(0.5f, hx, 3);   // (0.5-0.1)/(0.9-0.1)
+        s.AntiDeadzone = 0.2;
+        var (ax, _) = StickMath.Process(0.11f, 0f, s);
+        Assert.True(ax > 0.2f && ax < 0.22f);
+    }
+
+    [Fact]
+    public void Trigger_Deadzone_And_HairTrigger()
+    {
+        var t = new TriggerSettings { Deadzone = 0.1, MaxZone = 0.5 };
+        Assert.Equal(0, StickMath.Trigger(20, t));
+        Assert.Equal(255, StickMath.Trigger(140, t));
+    }
+
+    [Fact]
+    public void TriggerEffects_Encode()
+    {
+        var f = TriggerEffects.Feedback(5, 8);
+        Assert.Equal(0x21, f[0]);
+        Assert.Equal(0xE0, f[1]); Assert.Equal(0x03, f[2]);   // bolge 5..9 etkin
+        var w = TriggerEffects.Weapon(2, 6, 5);
+        Assert.Equal([0x25, 0x44, 0x00, 0x04], w[..4]);
+        Assert.Equal(0x05, TriggerEffects.Off()[0]);
+        var v = TriggerEffects.Vibration(0, 8, 30);
+        Assert.Equal(0x26, v[0]); Assert.Equal(30, v[9]);
+        foreach (TriggerEffectKind k in Enum.GetValues<TriggerEffectKind>())
+            Assert.Equal(11, TriggerEffects.Build(new TriggerSettings { Effect = k, Start = 9, End = 0, Strength = 99 }).Length);
+    }
+
+    [Fact]
+    public void DualSense_Output_IncludesTriggers()
+    {
+        var buf = new byte[48];
+        var o = new PadOutput { TriggerR = TriggerEffects.Weapon(2, 6, 5), TriggerL = TriggerEffects.Feedback(0, 3) };
+        OutputBuilder.BuildDualSense(buf, false, 0, o);
+        Assert.Equal(0x0F, buf[1]);
+        Assert.Equal(0x25, buf[11]); Assert.Equal(0x21, buf[22]);
+    }
+
+    [Fact]
+    public void HidHide_InstanceId()
+    {
+        Assert.Equal(@"HID\VID_054C&PID_0CE6\7&1A2B3C&0&0000",
+            HidHide.InstanceId(@"\\?\hid#vid_054c&pid_0ce6#7&1a2b3c&0&0000#{4d1e55b2-f16f-11cf-88cb-001111000030}"));
+    }
+
+    [Fact]
+    public void Profile_NormalizeAndExeMatch()
+    {
+        var p = new Profile { Exes = "eldenring; Cyberpunk2077.exe" }.Normalize();
+        Assert.Equal(Targets.MappableButtons.Length, p.Buttons.Count);
+        Assert.True(p.MatchesExe("EldenRing.exe"));
+        Assert.True(p.MatchesExe("cyberpunk2077.exe"));
+        Assert.False(p.MatchesExe("notepad.exe"));
+        var c = p.Clone("Kopya");
+        Assert.Equal("Kopya", c.Name); Assert.Equal("", c.Exes);
     }
 }

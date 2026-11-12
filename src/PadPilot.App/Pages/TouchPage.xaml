@@ -1,0 +1,37 @@
+<UserControl x:Class="PadPilot.App.Pages.TouchPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:PadPilot.App">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="16" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Border Style="{StaticResource Card}" VerticalAlignment="Top">
+            <StackPanel DataContext="{Binding Profile.Touch}">
+                <TextBlock Text="Touchpad" Style="{StaticResource H2}" />
+                <local:SettingRow Title="Kullanım" Description="Fare modunda touchpad tıklaması sol tık olur (Tuşlar sayfasındaki eşleme yok sayılır).">
+                    <ComboBox ItemsSource="{x:Static local:Choices.TouchModes}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Mode}" Width="230" />
+                </local:SettingRow>
+                <local:SliderRow Title="İmleç hızı" Minimum="0.2" Maximum="3" Step="0.05" Format="x" Value="{Binding Sensitivity}" />
+                <local:SettingRow Title="Dokunarak tıkla" Description="Hafifçe dokunup kaldırmak sol tık yapar.">
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding TapToClick}" />
+                </local:SettingRow>
+                <local:SettingRow Title="İki parmakla kaydır" Description="Sayfa kaydırma (fare tekerleği).">
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding TwoFingerScroll}" />
+                </local:SettingRow>
+                <local:SettingRow Title="Sağ yarı = sağ tık" Description="Touchpad'in sağ yarısına basmak sağ tık olur; iki parmakla basmak da sağ tıktır.">
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding SplitClick}" />
+                </local:SettingRow>
+            </StackPanel>
+        </Border>
+        <Border Grid.Column="2" Style="{StaticResource Card}" VerticalAlignment="Top">
+            <StackPanel>
+                <TextBlock Text="Canlı" Style="{StaticResource H2}" />
+                <local:PadVisual Height="200" State="{Binding SelectedPad.State}" IsDualSense="{Binding SelectedPad.IsDualSense}" Light="{Binding LightColor}" />
+                <TextBlock Style="{StaticResource Muted}" Margin="0,8,0,0" Text="Touchpad'e dokunduğunda parmak konumları beyaz nokta olarak görünür." />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

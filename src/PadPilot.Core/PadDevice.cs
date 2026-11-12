@@ -89,6 +89,7 @@ public sealed class PadDevice : IDisposable
 
     public void Start()
     {
+        try { ReadMac(); } catch { }
         if (Bluetooth)
         {
             // Kalibrasyon ozellik raporunu okumak pad'i basit moddan tam rapor moduna gecirir.
@@ -139,8 +140,64 @@ public sealed class PadDevice : IDisposable
 
     public void SetLightbar(byte r, byte g, byte b)
     {
-        lock (_outLock) { _out.R = r; _out.G = g; _out.B = b; }
+        lock (_outLock)
+        {
+            if (_out.R == r && _out.G == g && _out.B == b) return;
+            _out.R = r; _out.G = g; _out.B = b;
+        }
         Flush();
+    }
+
+    /// <summary>DualSense adaptif tetikleri; DualShock 4'te etkisiz.</summary>
+    public void SetTriggers(byte[] right, byte[] left)
+    {
+        if (!IsDualSense) return;
+        lock (_outLock) { _out.TriggerR = right; _out.TriggerL = left; }
+        Flush();
+    }
+
+    /// <summary>DualSense'in alttaki 5 oyuncu LED'i (bit maskesi).</summary>
+    public void SetPlayerLeds(byte mask)
+    {
+        if (!IsDualSense) return;
+        lock (_outLock) { if (_out.PlayerLeds == mask) return; _out.PlayerLeds = mask; }
+        Flush();
+    }
+
+    public void SetMicLed(bool on)
+    {
+        if (!IsDualSense) return;
+        lock (_outLock) { byte v = (byte)(on ? 1 : 0); if (_out.MicLed == v) return; _out.MicLed = v; }
+        Flush();
+    }
+
+    public bool HasAdaptiveTriggers => IsDualSense;
+    public bool HasPlayerLeds => IsDualSense;
+
+    /// <summary>Bluetooth MAC adresi (yalnizca Bluetooth baglantida, bilinmiyorsa null).</summary>
+    public ulong? MacAddress { get; private set; }
+
+    /// <summary>Bluetooth pad'i kapatir (PS tusuna 10 sn basmaya gerek kalmaz).</summary>
+    public bool DisconnectBluetooth() => Bluetooth && MacAddress is ulong mac && BluetoothNative.Disconnect(mac);
+
+    void ReadMac()
+    {
+        if (!Bluetooth) return;
+        var sb = new char[64];
+        if (HidNative.HidD_GetSerialNumberString(_write, sb, sb.Length * 2))
+        {
+            string s = new string(sb).TrimEnd('\0').Replace(":", "").Replace("-", "");
+            if (s.Length == 12 && ulong.TryParse(s, System.Globalization.NumberStyles.HexNumber, null, out ulong v)) { MacAddress = v; return; }
+        }
+        // Yedek: eslesme bilgisi ozellik raporu (DualSense 0x09, DS4 0x12); MAC ters sirada 1..6. baytlarda.
+        var f = new byte[_featLen];
+        f[0] = IsDualSense ? (byte)0x09 : (byte)0x12;
+        if (HidNative.HidD_GetFeature(_write, f, f.Length))
+        {
+            ulong v = 0;
+            for (int i = 6; i >= 1; i--) v = (v << 8) | f[i];
+            if (v != 0) MacAddress = v;
+        }
     }
 
     void Flush()

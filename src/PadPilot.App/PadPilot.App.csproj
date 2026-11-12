@@ -3,11 +3,21 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>PadPilot</AssemblyName>
     <RootNamespace>PadPilot.App</RootNamespace>
+    <ApplicationIcon>padpilot.ico</ApplicationIcon>
+    <NoWarn>$(NoWarn);WPF0001</NoWarn>
   </PropertyGroup>
+  <ItemGroup>
+    <Using Remove="System.Windows.Forms" />
+    <Using Remove="System.Drawing" /><Using Include="System.IO" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="padpilot.ico" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PadPilot.Core\PadPilot.Core.csproj" />
   </ItemGroup>

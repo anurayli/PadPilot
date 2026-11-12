@@ -1,0 +1,56 @@
+<UserControl x:Class="PadPilot.App.Pages.LightsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:PadPilot.App">
+    <StackPanel>
+        <Border Style="{StaticResource Card}">
+            <StackPanel DataContext="{Binding Profile.Light}">
+                <TextBlock Text="Işık çubuğu" Style="{StaticResource H2}" />
+                <local:SettingRow Title="Mod">
+                    <ComboBox ItemsSource="{x:Static local:Choices.LightModes}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Mode}" Width="230" />
+                </local:SettingRow>
+                <local:SettingRow Title="Renk" Description="Sabit renk modunda kullanılır.">
+                    <StackPanel Orientation="Horizontal">
+                        <ItemsControl ItemsSource="{x:Static local:Choices.Swatches}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate><StackPanel Orientation="Horizontal" /></ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Width="26" Height="26" Margin="3,0" Padding="0" Tag="{Binding}" Click="Swatch_Click" Cursor="Hand" ToolTip="{Binding}">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border CornerRadius="13" Background="{Binding}" BorderBrush="#40FFFFFF" BorderThickness="1" />
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBox Text="{Binding Color, UpdateSourceTrigger=LostFocus}" Width="96" Margin="12,0,0,0" FontFamily="Cascadia Mono, Consolas" ToolTip="#RRGGBB" />
+                    </StackPanel>
+                </local:SettingRow>
+                <local:SliderRow Title="Parlaklık" Minimum="0.05" Maximum="1" Step="0.05" Format="%" Value="{Binding Brightness}" />
+                <local:SettingRow Title="Pil azalınca kırmızı yanıp sön" Description="Eşik Ayarlar sayfasından değiştirilebilir.">
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding LowBatteryFlash}" />
+                </local:SettingRow>
+                <local:SettingRow Title="Oyuncu numarası LED'leri" Description="DualSense'in alt LED'leri kaçıncı oyuncu olduğunu gösterir.">
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding PlayerLeds}" />
+                </local:SettingRow>
+            </StackPanel>
+        </Border>
+
+        <Border Style="{StaticResource Card}">
+            <StackPanel>
+                <TextBlock Text="Titreşim" Style="{StaticResource H2}" />
+                <local:SliderRow Title="Oyun titreşimi gücü" Minimum="0" Maximum="2" Step="0.05" Format="%" Value="{Binding Profile.Light.RumbleStrength}"
+                                 Description="%0 kapatır, %200 iki katına çıkarır." />
+                <WrapPanel Margin="0,10,0,0">
+                    <Button Style="{StaticResource Chip}" Content="Ağır motor" Tag="strong" Click="Rumble_Click" />
+                    <Button Style="{StaticResource Chip}" Content="Hafif motor" Tag="weak" Click="Rumble_Click" />
+                    <Button Style="{StaticResource Chip}" Content="İkisi birden" Tag="both" Click="Rumble_Click" />
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

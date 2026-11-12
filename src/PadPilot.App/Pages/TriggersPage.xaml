@@ -1,0 +1,14 @@
+<UserControl x:Class="PadPilot.App.Pages.TriggersPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:pages="clr-namespace:PadPilot.App.Pages">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="16" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <pages:TriggerEditor Title="L2 (sol tetik)" Settings="{Binding Profile.L2}" Value="{Binding SelectedPad.L2}" LiveText="{Binding SelectedPad.L2Text}" />
+        <pages:TriggerEditor Grid.Column="2" Title="R2 (sağ tetik)" Settings="{Binding Profile.R2}" Value="{Binding SelectedPad.R2}" LiveText="{Binding SelectedPad.R2Text}" />
+    </Grid>
+</UserControl>

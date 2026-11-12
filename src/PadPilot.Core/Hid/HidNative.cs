@@ -35,6 +35,8 @@ internal static class HidNative
     [DllImport("hid.dll")] public static extern int HidP_GetCaps(IntPtr preparsed, out HIDP_CAPS caps);
     [DllImport("hid.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.U1)]
     public static extern bool HidD_GetFeature(SafeFileHandle h, byte[] buf, int len);
+    [DllImport("hid.dll", SetLastError = true, CharSet = CharSet.Unicode)] [return: MarshalAs(UnmanagedType.U1)]
+    public static extern bool HidD_GetSerialNumberString(SafeFileHandle h, [Out] char[] buf, int bytes);
     [DllImport("hid.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.U1)]
     public static extern bool HidD_SetOutputReport(SafeFileHandle h, byte[] buf, int len);
 

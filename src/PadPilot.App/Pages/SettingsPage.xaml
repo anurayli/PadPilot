@@ -1,0 +1,65 @@
+<UserControl x:Class="PadPilot.App.Pages.SettingsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:PadPilot.App">
+    <StackPanel>
+        <Border Style="{StaticResource Card}">
+            <StackPanel DataContext="{Binding Settings}">
+                <TextBlock Text="Oyunlar pad'i nasıl görsün" Style="{StaticResource H2}" />
+                <local:SettingRow Title="Sanal pad türü" Description="Xbox 360 hemen her oyunda çalışır. DualShock 4 seçersen oyunlar PlayStation tuş simgelerini gösterebilir.">
+                    <ComboBox ItemsSource="{x:Static local:Choices.OutputKinds}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Output}" Width="300" />
+                </local:SettingRow>
+                <local:SettingRow Title="Çift girişi önle (HidHide)"
+                                  Description="Gerçek pad'i oyunlardan gizler; oyun yalnızca PadPilot'un sanal pad'ini görür. İlk açışta yönetici onayı (UAC) ister.">
+                    <CheckBox x:Name="HideSwitch" Style="{StaticResource Switch}" IsChecked="{Binding HideRealPads, Mode=OneWay}" Click="Hide_Click" />
+                </local:SettingRow>
+                <TextBlock x:Name="HideResult" Style="{StaticResource Muted}" Visibility="Collapsed" />
+            </StackPanel>
+        </Border>
+
+        <Border Style="{StaticResource Card}">
+            <StackPanel DataContext="{Binding Settings}">
+                <TextBlock Text="Başlangıç ve pencere" Style="{StaticResource H2}" />
+                <local:SettingRow Title="Windows açılınca başlat" Description="Sistem tepsisinde sessizce açılır.">
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding StartWithWindows}" Click="Startup_Click" />
+                </local:SettingRow>
+                <local:SettingRow Title="Küçültülmüş başlat">
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding StartMinimized}" />
+                </local:SettingRow>
+                <local:SettingRow Title="Kapatınca tepside çalışmaya devam et" Description="Kapalıysa pencereyi kapatmak PadPilot'u tamamen kapatır.">
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding CloseToTray}" />
+                </local:SettingRow>
+            </StackPanel>
+        </Border>
+
+        <Border Style="{StaticResource Card}">
+            <StackPanel DataContext="{Binding Settings}">
+                <TextBlock Text="Pil ve güç" Style="{StaticResource H2}" />
+                <local:SliderRow Title="Düşük pil uyarısı" Minimum="5" Maximum="50" Step="5" Snap="True" Format="0'%'" Value="{Binding LowBatteryWarn}" />
+                <local:SliderRow Title="Boşta kapat (dk)" Minimum="0" Maximum="60" Step="5" Snap="True" Format="0" Value="{Binding IdleDisconnectMinutes}"
+                                 Description="Bluetooth pad bu kadar dakika kullanılmazsa kapatılır. 0 = kapalı." />
+                <local:SettingRow Title="PS + Options = pad'i kapat" Description="İki tuşa 1 saniye basılı tutunca Bluetooth pad kapanır (10 sn PS'e basmaya gerek kalmaz).">
+                    <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding PsOptionsDisconnect}" />
+                </local:SettingRow>
+            </StackPanel>
+        </Border>
+
+        <Border Style="{StaticResource Card}">
+            <StackPanel>
+                <TextBlock Text="Sürücüler ve dosyalar" Style="{StaticResource H2}" />
+                <local:SettingRow Title="ViGEmBus (sanal pad sürücüsü)">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="8" Height="8" Fill="{Binding DriverBrush}" VerticalAlignment="Center" />
+                        <TextBlock Text="{Binding DriverStatus}" Margin="8,0,0,0" />
+                    </StackPanel>
+                </local:SettingRow>
+                <local:SettingRow Title="HidHide (gizleme sürücüsü)">
+                    <TextBlock Text="{Binding HidHideStatus}" />
+                </local:SettingRow>
+                <WrapPanel Margin="0,8,0,0">
+                    <Button Style="{StaticResource Chip}" Content="Ayar klasörünü aç" Click="OpenFolder_Click" />
+                </WrapPanel>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>
