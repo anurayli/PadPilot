@@ -199,6 +199,7 @@ public sealed class Engine : IDisposable
         if (low && l.LowBatteryFlash) (r, g, b) = (now % 1.2) < 0.6 ? (1.0, 0.0, 0.0) : (0.0, 0.0, 0.0);
         double k = l.Mode == LightMode.Off ? 0 : Math.Clamp(l.Brightness, 0.05, 1);
         pad.SetLightbar((byte)(r * k * 255), (byte)(g * k * 255), (byte)(b * k * 255));
+        if (now - rt.LastResend > 1.0) { rt.LastResend = now; pad.Resend(); }
 
         // Pil uyarisi (bir kez)
         lock (_lowWarned)

@@ -59,6 +59,8 @@ public sealed class PadRuntime : IDisposable
     public bool GyroActive, GyroCalibrating;
     public double LastActivity = Now;
     public double IdleSeconds => Now - LastActivity;
+    /// <summary>Motorun son periyodik cikis yenilemesi (motor saatine gore).</summary>
+    public double LastResend;
 
     /// <summary>Profil degistirme gibi motorun ele alacagi eylemler.</summary>
     public event Action<PadRuntime, string>? ActionRequested;

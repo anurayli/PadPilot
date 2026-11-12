@@ -171,6 +171,10 @@ public sealed class PadDevice : IDisposable
         Flush();
     }
 
+    /// <summary>Son cikis durumunu yeniden gonderir. DualSense acilistaki isik animasyonu bitene kadar
+    /// renk komutlarini yok sayar; ayrica Bluetooth'ta kaybolan paketlere karsi periyodik cagrilir.</summary>
+    public void Resend() => Flush();
+
     public bool HasAdaptiveTriggers => IsDualSense;
     public bool HasPlayerLeds => IsDualSense;
 
