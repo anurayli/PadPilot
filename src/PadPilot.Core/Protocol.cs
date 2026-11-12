@@ -187,7 +187,7 @@ public static class OutputBuilder
     public static int BuildDualSenseSetup(Span<byte> buf, bool bluetooth, byte seq)
     {
         int c = DualSenseHeader(buf, bluetooth, seq);
-        buf[c + 38] = 0x01;   // valid_flag2: isik cubugu kurulumu
+        buf[c + 38] = 0x02;   // valid_flag2: LIGHTBAR_SETUP_CONTROL_ENABLE (BIT 1); 0x01 olunca isik mavide kalir
         buf[c + 41] = 0x02;   // lightbar_setup: sondur
         return DualSenseFinish(buf, bluetooth, c);
     }

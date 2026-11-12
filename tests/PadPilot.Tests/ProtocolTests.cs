@@ -187,6 +187,15 @@ public class ProtocolTests
     }
 
     [Fact]
+    public void DualSense_Setup_ReleasesLightbar()
+    {
+        var buf = new byte[78];
+        OutputBuilder.BuildDualSenseSetup(buf, true, 0);
+        Assert.Equal(0x02, buf[3 + 38]);   // valid_flag2: isik cubugu kurulum kontrolu
+        Assert.Equal(0x02, buf[3 + 41]);   // lightbar_setup: mavi animasyonu sondur
+    }
+
+    [Fact]
     public void HidHide_InstanceId()
     {
         Assert.Equal(@"HID\VID_054C&PID_0CE6\7&1A2B3C&0&0000",
