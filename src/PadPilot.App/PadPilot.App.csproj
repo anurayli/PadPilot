@@ -9,6 +9,9 @@
     <AssemblyName>PadPilot</AssemblyName>
     <RootNamespace>PadPilot.App</RootNamespace>
     <ApplicationIcon>padpilot.ico</ApplicationIcon>
+    <Version>1.0.0</Version>
+    <Product>PadPilot</Product>
+    <Description>PS4 / PS5 controller hub for Windows</Description>
     <NoWarn>$(NoWarn);WPF0001</NoWarn>
   </PropertyGroup>
   <ItemGroup>

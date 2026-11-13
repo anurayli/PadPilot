@@ -3,3 +3,5 @@ obj/
 *.user
 .vs/
 .dev/
+artifacts/
+installer/redist/
