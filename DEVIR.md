@@ -69,3 +69,9 @@ Aşama 2 kodu yazıldı. Derleme temiz, 17/17 test geçiyor, tüm sayfaların ek
 - Makro kaydı, mod değiştirme (tuşa basılıyken başka eşleme katmanı)
 - Mikrofon tuşu = Windows mikrofonunu sustur (Core Audio)
 - DualSense yeni bellenim titreşim bayrağı (valid_flag2 bit 2) kontrolü
+
+## Yayın (13 Kasım 2026)
+- GitHub: https://github.com/anurayli/PadPilot (herkese açık, MIT)
+- Sürüm v1.0.0: Releases'ta PadPilot-Setup-1.0.0.exe (ViGEmBus + HidHide dahil)
+- Yeni kurulum dosyası: installer\build.ps1 -Version x.y.z, sonra gh release create
+- Arayüz Türkçe/İngilizce (src\PadPilot.App\Strings.cs)
