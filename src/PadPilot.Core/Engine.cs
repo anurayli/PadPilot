@@ -35,7 +35,10 @@ public sealed class Engine : IDisposable
     public event Action? PadsChanged;
     public event Action? ProfileChanged;
     /// <summary>Tepsi bildirimi icin (baslik, metin).</summary>
-    public event Action<string, string>? Notify;
+    public event Action<string, string, bool>? Notify;
+
+    void Say(string trTitle, string enTitle, string text, bool important = false) =>
+        Notify?.Invoke(Lang.T(trTitle, enTitle), text, important);
 
     public Engine()
     {
@@ -70,7 +73,7 @@ public sealed class Engine : IDisposable
         _outputsDirty = true;
         if (Settings.HideRealPads) HideNewPad(pad);
         PadsChanged?.Invoke();
-        Notify?.Invoke("Pad bağlandı", $"{pad.DisplayName} · {(pad.Bluetooth ? "Bluetooth" : "USB")} · Oyuncu {slot}");
+        Say("Pad bağlandı", "Controller connected", $"{pad.DisplayName} · {(pad.Bluetooth ? "Bluetooth" : "USB")} · {Lang.T("Oyuncu", "Player")} {slot}");
     }
 
     void OnPadRemoved(PadDevice pad)
@@ -132,10 +135,10 @@ public sealed class Engine : IDisposable
                 int i = Settings.Profiles.IndexOf(FindProfile(Settings.ActiveProfile));
                 int n = Settings.Profiles.Count;
                 SelectProfile(Settings.Profiles[(i + (code == "a:NextProfile" ? 1 : n - 1)) % n].Name);
-                Notify?.Invoke("Profil", ActiveProfile.Name);
+                Say("Profil", "Profile", ActiveProfile.Name, true);
                 break;
             case "a:Disconnect":
-                if (rt.Pad.DisconnectBluetooth()) Notify?.Invoke("Pad kapatıldı", rt.Pad.DisplayName);
+                if (rt.Pad.DisconnectBluetooth()) Say("Pad kapatıldı", "Controller turned off", rt.Pad.DisplayName);
                 break;
         }
     }
@@ -161,7 +164,7 @@ public sealed class Engine : IDisposable
                     _autoExe = match;
                     var before = ActiveProfile;
                     ApplyEffective();
-                    if (!ReferenceEquals(before, ActiveProfile)) Notify?.Invoke("Profil değişti", ActiveProfile.Name + (match != null ? $" ({match})" : ""));
+                    if (!ReferenceEquals(before, ActiveProfile)) Say("Profil değişti", "Profile changed", ActiveProfile.Name + (match != null ? $" ({match})" : ""), true);
                 }
             }
 
@@ -204,7 +207,7 @@ public sealed class Engine : IDisposable
         // Pil uyarisi (bir kez)
         lock (_lowWarned)
         {
-            if (low && _lowWarned.Add(pad)) Notify?.Invoke("Pil azaldı", $"{pad.DisplayName}: %{s.BatteryPercent}");
+            if (low && _lowWarned.Add(pad)) Say("Pil azaldı", "Battery low", $"{pad.DisplayName}: {s.BatteryPercent}%", true);
             if (!low && s.BatteryPercent > Settings.LowBatteryWarn + 5) _lowWarned.Remove(pad);
         }
 
@@ -212,7 +215,8 @@ public sealed class Engine : IDisposable
         if (Settings.IdleDisconnectMinutes > 0 && pad.Bluetooth && rt.IdleSeconds > Settings.IdleDisconnectMinutes * 60)
         {
             rt.LastActivity = double.MaxValue / 2;   // tekrar denemesin
-            if (pad.DisconnectBluetooth()) Notify?.Invoke("Pad kapatıldı", $"{Settings.IdleDisconnectMinutes} dk boyunca kullanılmadı.");
+            if (pad.DisconnectBluetooth()) Say("Pad kapatıldı", "Controller turned off",
+                Lang.T($"{Settings.IdleDisconnectMinutes} dk boyunca kullanılmadı.", $"Idle for {Settings.IdleDisconnectMinutes} min."));
         }
     }
 

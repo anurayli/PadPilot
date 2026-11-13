@@ -6,26 +6,25 @@
         <Border Style="{StaticResource Card}">
             <StackPanel>
                 <DockPanel Margin="0,0,0,6">
-                    <Button DockPanel.Dock="Right" Content="Hepsini varsayılana döndür" Click="ResetButtons_Click" />
-                    <StackPanel>
-                        <TextBlock Text="Tuş eşleme" Style="{StaticResource H2}" Margin="0,0,0,2" />
-                        <TextBlock Style="{StaticResource Muted}"
-                                   Text="Uzun basış seçilen tuşta kısa dokunuş “kısa basış” eylemini, 0,35 sn'den uzun basış ise ikinci eylemi yapar. Turbo, basılı tutarken saniyede ~8 kez basar." />
+                    <Button DockPanel.Dock="Right" Content="{local:L ResetAll}" Click="ResetButtons_Click" VerticalAlignment="Top" />
+                    <StackPanel Margin="0,0,16,0">
+                        <TextBlock Text="{local:L Mapping}" Style="{StaticResource H2}" Margin="0,0,0,2" />
+                        <TextBlock Style="{StaticResource Muted}" Text="{local:L MappingHelp}" />
                     </StackPanel>
                 </DockPanel>
                 <Grid Margin="0,12,0,4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="28" />
-                        <ColumnDefinition Width="190" />
+                        <ColumnDefinition Width="200" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="14" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="80" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="1" Text="Pad tuşu" Style="{StaticResource Muted}" />
-                    <TextBlock Grid.Column="2" Text="Kısa basış" Style="{StaticResource Muted}" />
-                    <TextBlock Grid.Column="4" Text="Uzun basış" Style="{StaticResource Muted}" />
-                    <TextBlock Grid.Column="5" Text="Turbo" Style="{StaticResource Muted}" HorizontalAlignment="Center" />
+                    <TextBlock Grid.Column="1" Text="{local:L ColPad}" Style="{StaticResource Muted}" />
+                    <TextBlock Grid.Column="2" Text="{local:L ColTap}" Style="{StaticResource Muted}" />
+                    <TextBlock Grid.Column="4" Text="{local:L ColHold}" Style="{StaticResource Muted}" />
+                    <TextBlock Grid.Column="5" Text="{local:L Turbo}" Style="{StaticResource Muted}" HorizontalAlignment="Center" />
                 </Grid>
                 <ItemsControl x:Name="Rows" ItemsSource="{Binding Profile.Buttons}">
                     <ItemsControl.ItemTemplate>
@@ -34,13 +33,13 @@
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="28" />
-                                        <ColumnDefinition Width="190" />
+                                        <ColumnDefinition Width="200" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="14" />
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="80" />
                                     </Grid.ColumnDefinitions>
-                                    <Ellipse x:Name="Dot" Width="9" Height="9" Fill="{StaticResource CardBorder}" VerticalAlignment="Center" HorizontalAlignment="Left" Tag="{Binding Button}" />
+                                    <Ellipse Width="9" Height="9" Fill="{StaticResource CardBorder}" VerticalAlignment="Center" HorizontalAlignment="Left" Tag="{Binding Button}" />
                                     <TextBlock Grid.Column="1" Text="{Binding Label}" VerticalAlignment="Center" />
                                     <ComboBox Grid.Column="2" ItemsSource="{x:Static local:Choices.Targets_}" DisplayMemberPath="Label" SelectedValuePath="Code"
                                               SelectedValue="{Binding Tap}" HorizontalAlignment="Stretch" MaxDropDownHeight="420" />
@@ -54,7 +53,6 @@
                 </ItemsControl>
             </StackPanel>
         </Border>
-        <TextBlock Style="{StaticResource Muted}" Margin="4,0"
-                   Text="İpucu: Soldaki nokta, o tuşa pad'de bastığında yanar. L2/R2'ye başka bir şey atanırsa analog tetik oyuna gönderilmez." />
+        <TextBlock Style="{StaticResource Muted}" Margin="4,0" Text="{local:L MappingTip}" />
     </StackPanel>
 </UserControl>

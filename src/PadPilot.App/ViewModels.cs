@@ -8,51 +8,63 @@ namespace PadPilot.App;
 
 public sealed record Choice(object Value, string Label);
 
-/// <summary>Acilir listelerin Turkce secenekleri.</summary>
+/// <summary>Acilir listelerin secenekleri (gecerli dilde; sayfa her kurulusta yeniden okur).</summary>
 public static class Choices
 {
-    public static Choice[] OutputKinds { get; } =
+    static string T(string tr, string en) => Lang.T(tr, en);
+
+    public static Choice[] Languages =>
     [
-        new(OutputKind.Xbox360, "Xbox 360 kumandası (en uyumlu)"),
-        new(OutputKind.DualShock4, "DualShock 4 (oyunda PlayStation simgeleri)"),
-        new(OutputKind.None, "Sanal pad yok (yalnızca klavye/fare)"),
+        new("auto", T("Otomatik (Windows dili)", "Automatic (Windows language)")), new("tr", "Türkçe"), new("en", "English"),
     ];
-    public static Choice[] StickModes { get; } =
+    public static Choice[] OutputKinds =>
     [
-        new(StickMode.Normal, "Analog"), new(StickMode.Mouse, "Fare imleci"), new(StickMode.Flick, "Flick stick (FPS)"),
-        new(StickMode.Wasd, "WASD tuşları"), new(StickMode.Arrows, "Ok tuşları"),
+        new(OutputKind.Xbox360, T("Xbox 360 kumandası (en uyumlu)", "Xbox 360 controller (most compatible)")),
+        new(OutputKind.DualShock4, T("DualShock 4 (oyunda PlayStation simgeleri)", "DualShock 4 (PlayStation icons in games)")),
+        new(OutputKind.None, T("Sanal pad yok (yalnızca klavye/fare)", "No virtual pad (keyboard/mouse only)")),
     ];
-    public static Choice[] StickCurves { get; } =
+    public static Choice[] StickModes =>
     [
-        new(StickCurve.Linear, "Doğrusal"), new(StickCurve.Precise, "Hassas (merkezde yavaş)"),
-        new(StickCurve.Smooth, "Yumuşak (S eğrisi)"), new(StickCurve.Aggressive, "Çevik (hızlı tepki)"),
+        new(StickMode.Normal, T("Analog", "Analog stick")), new(StickMode.Mouse, T("Fare imleci", "Mouse cursor")),
+        new(StickMode.Flick, T("Flick stick (FPS)", "Flick stick (FPS)")),
+        new(StickMode.Wasd, T("WASD tuşları", "WASD keys")), new(StickMode.Arrows, T("Ok tuşları", "Arrow keys")),
     ];
-    public static Choice[] GyroModes { get; } =
+    public static Choice[] StickCurves =>
     [
-        new(GyroMode.Off, "Kapalı"), new(GyroMode.Mouse, "Fare (nişan için en iyisi)"), new(GyroMode.RightStick, "Sağ analoğa ekle"),
+        new(StickCurve.Linear, T("Doğrusal", "Linear")), new(StickCurve.Precise, T("Hassas (merkezde yavaş)", "Precise (slow near center)")),
+        new(StickCurve.Smooth, T("Yumuşak (S eğrisi)", "Smooth (S-curve)")), new(StickCurve.Aggressive, T("Çevik (hızlı tepki)", "Aggressive (fast response)")),
     ];
-    public static Choice[] GyroActivations { get; } =
+    public static Choice[] GyroModes =>
     [
-        new(GyroActivation.Always, "Her zaman"), new(GyroActivation.WhileHeld, "Tuş basılıyken"),
-        new(GyroActivation.WhileNotHeld, "Tuş basılı değilken"), new(GyroActivation.Toggle, "Tuşla aç / kapat"),
+        new(GyroMode.Off, T("Kapalı", "Off")), new(GyroMode.Mouse, T("Fare (nişan için en iyisi)", "Mouse (best for aiming)")),
+        new(GyroMode.RightStick, T("Sağ analoğa ekle", "Add to right stick")),
     ];
-    public static Choice[] GyroAxes { get; } =
+    public static Choice[] GyroActivations =>
     [
-        new(GyroAxis.Yaw, "Sağa-sola çevirme (yaw)"), new(GyroAxis.Roll, "Yana yatırma (roll)"), new(GyroAxis.Both, "İkisi birden"),
+        new(GyroActivation.Always, T("Her zaman", "Always")), new(GyroActivation.WhileHeld, T("Tuş basılıyken", "While button held")),
+        new(GyroActivation.WhileNotHeld, T("Tuş basılı değilken", "While button not held")), new(GyroActivation.Toggle, T("Tuşla aç / kapat", "Toggle with button")),
     ];
-    public static Choice[] Buttons { get; } = [.. Targets.MappableButtons.Select(b => new Choice(b, Targets.ButtonLabel(b)))];
-    public static Choice[] TouchModes { get; } = [new(TouchMode.Off, "Kapalı (yalnızca tıklama tuşu)"), new(TouchMode.Mouse, "Fare / touchpad")];
-    public static Choice[] LightModes { get; } =
+    public static Choice[] GyroAxes =>
     [
-        new(LightMode.Static, "Sabit renk"), new(LightMode.Battery, "Pil seviyesine göre"),
-        new(LightMode.Rainbow, "Gökkuşağı"), new(LightMode.Off, "Kapalı"),
+        new(GyroAxis.Yaw, T("Sağa-sola çevirme (yaw)", "Turn left/right (yaw)")), new(GyroAxis.Roll, T("Yana yatırma (roll)", "Tilt sideways (roll)")),
+        new(GyroAxis.Both, T("İkisi birden", "Both")),
     ];
-    public static Choice[] TriggerKinds { get; } =
+    public static Choice[] Buttons => [.. Targets.MappableButtons.Select(b => new Choice(b, Targets.ButtonLabel(b)))];
+    public static Choice[] TouchModes =>
     [
-        new(TriggerEffectKind.Off, "Kapalı"), new(TriggerEffectKind.Resistance, "Sabit direnç"),
-        new(TriggerEffectKind.Slope, "Giderek artan direnç"), new(TriggerEffectKind.Weapon, "Silah (sonda tık)"),
-        new(TriggerEffectKind.Bow, "Yay (ger ve bırak)"), new(TriggerEffectKind.Vibration, "Titreşim / otomatik silah"),
-        new(TriggerEffectKind.Galloping, "Dörtnala"), new(TriggerEffectKind.Machine, "Makine"),
+        new(TouchMode.Off, T("Kapalı (yalnızca tıklama tuşu)", "Off (click button only)")), new(TouchMode.Mouse, T("Fare / touchpad", "Mouse / touchpad")),
+    ];
+    public static Choice[] LightModes =>
+    [
+        new(LightMode.Static, T("Sabit renk", "Solid color")), new(LightMode.Battery, T("Pil seviyesine göre", "By battery level")),
+        new(LightMode.Rainbow, T("Gökkuşağı", "Rainbow")), new(LightMode.Off, T("Kapalı", "Off")),
+    ];
+    public static Choice[] TriggerKinds =>
+    [
+        new(TriggerEffectKind.Off, T("Kapalı", "Off")), new(TriggerEffectKind.Resistance, T("Sabit direnç", "Constant resistance")),
+        new(TriggerEffectKind.Slope, T("Giderek artan direnç", "Increasing resistance")), new(TriggerEffectKind.Weapon, T("Silah (sonda tık)", "Weapon (click at end)")),
+        new(TriggerEffectKind.Bow, T("Yay (ger ve bırak)", "Bow (pull and release)")), new(TriggerEffectKind.Vibration, T("Titreşim / otomatik silah", "Vibration / automatic gun")),
+        new(TriggerEffectKind.Galloping, T("Dörtnala", "Galloping")), new(TriggerEffectKind.Machine, T("Makine", "Machine")),
     ];
     public static IReadOnlyList<TargetInfo> Targets_ => Targets.All;
     public static IReadOnlyList<TargetInfo> HoldTargets => Targets.HoldTargets;
@@ -79,10 +91,10 @@ public sealed class PadVm(PadRuntime rt) : Vm
     public bool IsDualSense => Device.Kind != PadKind.DualShock4;
     public string Connection => Device.Bluetooth ? "Bluetooth" : "USB";
     public string ConnectionIcon => Device.Bluetooth ? "" : "";
-    public string Info => $"Oyuncu {Runtime.Slot} · {Connection} · {Device.ReportRateHz:0} Hz";
+    public string Info => $"{Loc.S("Player")} {Runtime.Slot} · {Connection} · {Device.ReportRateHz:0} Hz";
     public bool FullReport => _s.FullReport;
-    public string Battery => _s.FullReport ? $"%{_s.BatteryPercent}" : "—";
-    public string BatteryLong => !_s.FullReport ? "Pil bilgisi yok (basit mod)" : _s.Charging ? $"%{_s.BatteryPercent} · şarj oluyor" : $"%{_s.BatteryPercent}";
+    public string Battery => _s.FullReport ? $"{_s.BatteryPercent}%" : "—";
+    public string BatteryLong => !_s.FullReport ? Loc.S("NoBattery") : _s.Charging ? $"{_s.BatteryPercent}% · {Loc.S("Charging")}" : $"{_s.BatteryPercent}%";
     public string BatteryIcon => !_s.FullReport ? "" : _s.Charging ? "" : _s.BatteryPercent switch
     {
         >= 90 => "", >= 70 => "", >= 50 => "", >= 30 => "", >= 15 => "", _ => "",
@@ -101,12 +113,12 @@ public sealed class PadVm(PadRuntime rt) : Vm
     public double OutRY => Runtime.OutRY;
     public double L2 => _s.L2 / 255.0;
     public double R2 => _s.R2 / 255.0;
-    public string L2Text => $"ham %{_s.L2 * 100 / 255} → çıkış %{Runtime.LastOutput.LT * 100 / 255}";
-    public string R2Text => $"ham %{_s.R2 * 100 / 255} → çıkış %{Runtime.LastOutput.RT * 100 / 255}";
-    public string GyroText => !_s.FullReport ? "Gyro verisi yok (basit mod)"
-        : Runtime.GyroCalibrating ? "Kalibre ediliyor… pad'i kıpırdatma"
-        : $"Yaw {Runtime.GyroYawDps,6:0.0}°/sn   Pitch {Runtime.GyroPitchDps,6:0.0}°/sn   {(Runtime.GyroActive ? "● etkin" : "○ beklemede")}";
-    public string PressedText => _s.Buttons == PadButtons.None ? "Basılı tuş yok"
+    public string L2Text => $"{Loc.S("Raw")} {_s.L2 * 100 / 255}% → {Loc.S("Out")} {Runtime.LastOutput.LT * 100 / 255}%";
+    public string R2Text => $"{Loc.S("Raw")} {_s.R2 * 100 / 255}% → {Loc.S("Out")} {Runtime.LastOutput.RT * 100 / 255}%";
+    public string GyroText => !_s.FullReport ? Loc.S("NoGyro")
+        : Runtime.GyroCalibrating ? Loc.S("GyroCalibrating")
+        : $"Yaw {Runtime.GyroYawDps,6:0.0}°/s   Pitch {Runtime.GyroPitchDps,6:0.0}°/s   {Loc.S(Runtime.GyroActive ? "GyroActive" : "GyroIdle")}";
+    public string PressedText => _s.Buttons == PadButtons.None ? Loc.S("NoButtons")
         : string.Join("  ", Targets.MappableButtons.Where(b => (_s.Buttons & b) != 0).Select(Targets.ButtonLabel));
 
     public void Refresh() { _s = Device.State; RaiseAll(); }
@@ -130,13 +142,27 @@ public sealed class MainViewModel : Vm
         get => Engine.ActiveProfile;
         set { if (value != null && !ReferenceEquals(value, Engine.ActiveProfile)) Engine.SelectProfile(value.Name); }
     }
-    public string? AutoProfileNote => Engine.AutoProfileExe is string exe ? $"{exe} açık olduğu için bu profil otomatik seçildi." : null;
+    public string? AutoProfileNote => Engine.AutoProfileExe is string exe ? string.Format(Loc.S("AutoNote"), exe) : null;
     public bool AnyDualSense => Pads.Any(p => p.IsDualSense);
 
-    public string DriverStatus => Engine.VirtualAvailable ? "ViGEmBus hazır" : "ViGEmBus bulunamadı";
+    public string DriverStatus => Loc.S(Engine.VirtualAvailable ? "ViGEmOk" : "ViGEmMissing");
     public Brush DriverBrush => Engine.VirtualAvailable ? (Brush)App.Current.Resources["Good"] : (Brush)App.Current.Resources["Bad"];
-    public string HidHideStatus => HidHide.Installed ? "HidHide kurulu" : "HidHide kurulu değil";
+    public string HidHideStatus => Loc.S(HidHide.Installed ? "HidHideOk" : "HidHideMissing");
     public IEnumerable<string> RecentExes => Engine.RecentExes;
+
+    /// <summary>Dil degisince pencereyi yeniden kurmak icin.</summary>
+    public event Action? LanguageChanged;
+    public string Language
+    {
+        get => Settings.Language;
+        set
+        {
+            if (value == null || value == Settings.Language) return;
+            Settings.Language = value;
+            Lang.Apply(value);
+            LanguageChanged?.Invoke();
+        }
+    }
 
     public MainViewModel(Engine engine)
     {
@@ -166,7 +192,7 @@ public sealed class MainViewModel : Vm
         if (++_slow >= 15) { _slow = 0; Raise(nameof(RecentExes)); Raise(nameof(LightColor)); Raise(nameof(OutputText)); }
     }
 
-    public string OutputText => (string)Choices.OutputKinds.First(c => Equals(c.Value, Settings.Output)).Label;
+    public string OutputText => Choices.OutputKinds.First(c => Equals(c.Value, Settings.Output)).Label;
 
     // ---- Profil islemleri ----
     string UniqueName(string baseName)
@@ -176,8 +202,8 @@ public sealed class MainViewModel : Vm
         return n;
     }
 
-    public void NewProfile() => AddProfile(new Profile { Name = UniqueName("Yeni profil") }.Normalize());
-    public void DuplicateProfile() => AddProfile(Profile.Clone(UniqueName(Profile.Name + " kopya")));
+    public void NewProfile() => AddProfile(new Profile { Name = UniqueName(Loc.S("NewProfileName")) }.Normalize());
+    public void DuplicateProfile() => AddProfile(Profile.Clone(UniqueName(Profile.Name + " " + Loc.S("CopySuffix"))));
 
     void AddProfile(Profile p)
     {

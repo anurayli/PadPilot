@@ -16,31 +16,26 @@
                                     RawX="{Binding RawX, ElementName=Root}" RawY="{Binding RawY, ElementName=Root}"
                                     OutX="{Binding OutX, ElementName=Root}" OutY="{Binding OutY, ElementName=Root}"
                                     Deadzone="{Binding Settings.Deadzone, ElementName=Root}" Outer="{Binding Settings.OuterZone, ElementName=Root}" />
-                <TextBlock Style="{StaticResource Muted}" FontSize="11.5" Margin="0,8,0,0"
-                           Text="Gri: ham konum · Mavi: oyuna giden · Kırmızı: ölü bölge · Kesikli: dış bölge" />
+                <TextBlock Style="{StaticResource Muted}" FontSize="11.5" Margin="0,8,0,0" Text="{local:L StickLegend}" />
             </StackPanel>
             <StackPanel Grid.Column="2" DataContext="{Binding Settings, ElementName=Root}">
-                <local:SettingRow Title="Kullanım">
-                    <ComboBox ItemsSource="{x:Static local:Choices.StickModes}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Mode}" Width="220" />
+                <local:SettingRow Title="{local:L Usage}">
+                    <ComboBox ItemsSource="{x:Static local:Choices.StickModes}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Mode}" Width="230" />
                 </local:SettingRow>
-                <local:SettingRow Title="Tepki eğrisi">
-                    <ComboBox ItemsSource="{x:Static local:Choices.StickCurves}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Curve}" Width="220" />
+                <local:SettingRow Title="{local:L Curve}">
+                    <ComboBox ItemsSource="{x:Static local:Choices.StickCurves}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Curve}" Width="230" />
                 </local:SettingRow>
-                <local:SliderRow Title="Ölü bölge" Minimum="0" Maximum="0.4" Step="0.01" Format="%" Value="{Binding Deadzone}"
-                                 Description="Bu kadar itilmeden hareket sayılmaz. Analog kayması (drift) varsa artır." />
-                <local:SliderRow Title="Dış bölge" Minimum="0.6" Maximum="1" Step="0.01" Format="%" Value="{Binding OuterZone}"
-                                 Description="Bu noktada analog tam itilmiş sayılır. Eski pad'lerde tam değere ulaşmak için düşür." />
-                <local:SliderRow Title="Anti ölü bölge" Minimum="0" Maximum="0.4" Step="0.01" Format="%" Value="{Binding AntiDeadzone}"
-                                 Description="Oyunun kendi ölü bölgesini aşmak için çıkışa eklenen başlangıç değeri." />
-                <local:SliderRow Title="Hassasiyet" Minimum="0.5" Maximum="2" Step="0.05" Format="x" Value="{Binding Sensitivity}" />
-                <local:SliderRow Title="Fare hızı (piksel/sn)" Minimum="200" Maximum="5000" Step="50" Snap="True" Format="0" Value="{Binding MouseSpeed}"
+                <local:SliderRow Title="{local:L Deadzone}" Minimum="0" Maximum="0.4" Step="0.01" Format="%" Value="{Binding Deadzone}" Description="{local:L DeadzoneDesc}" />
+                <local:SliderRow Title="{local:L Outer}" Minimum="0.6" Maximum="1" Step="0.01" Format="%" Value="{Binding OuterZone}" Description="{local:L OuterDesc}" />
+                <local:SliderRow Title="{local:L Anti}" Minimum="0" Maximum="0.4" Step="0.01" Format="%" Value="{Binding AntiDeadzone}" Description="{local:L AntiDesc}" />
+                <local:SliderRow Title="{local:L Sensitivity}" Minimum="0.5" Maximum="2" Step="0.05" Format="x" Value="{Binding Sensitivity}" />
+                <local:SliderRow Title="{local:L MouseSpeed}" Minimum="200" Maximum="5000" Step="50" Snap="True" Format="0" Value="{Binding MouseSpeed}"
                                  Visibility="{Binding IsMouseMode, ElementName=Root, Converter={StaticResource Vis}}" />
-                <local:SliderRow Title="Flick: 360° kaç piksel" Minimum="1000" Maximum="30000" Step="100" Snap="True" Format="0" Value="{Binding Flick360}"
-                                 Visibility="{Binding IsFlickMode, ElementName=Root, Converter={StaticResource Vis}}"
-                                 Description="Oyunda fareyle tam tur dönmek için gereken piksel. Analoğu bir yöne it: karakter o yöne anında döner." />
+                <local:SliderRow Title="{local:L Flick360}" Minimum="1000" Maximum="30000" Step="100" Snap="True" Format="0" Value="{Binding Flick360}"
+                                 Visibility="{Binding IsFlickMode, ElementName=Root, Converter={StaticResource Vis}}" Description="{local:L Flick360Desc}" />
                 <WrapPanel Margin="0,8,0,0">
-                    <CheckBox Style="{StaticResource Switch}" Content="X eksenini ters çevir" IsChecked="{Binding InvertX}" Margin="0,0,24,0" />
-                    <CheckBox Style="{StaticResource Switch}" Content="Y eksenini ters çevir" IsChecked="{Binding InvertY}" />
+                    <CheckBox Style="{StaticResource Switch}" Content="{local:L InvertX}" IsChecked="{Binding InvertX}" Margin="0,0,24,0" />
+                    <CheckBox Style="{StaticResource Switch}" Content="{local:L InvertY}" IsChecked="{Binding InvertY}" />
                 </WrapPanel>
             </StackPanel>
         </Grid>

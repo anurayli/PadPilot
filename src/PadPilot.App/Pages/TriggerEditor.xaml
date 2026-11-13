@@ -11,38 +11,34 @@
             </DockPanel>
             <local:TriggerPreview Margin="0,12,0,8" Value="{Binding Value, ElementName=Root}" Start="{Binding Start}" End="{Binding End}" Kind="{Binding Effect}" />
 
-            <local:SliderRow Title="Ölü bölge" Minimum="0" Maximum="0.5" Step="0.01" Format="%" Value="{Binding Deadzone}"
-                             Description="Tetiğe hafif dokunmalar yok sayılır." />
-            <local:SliderRow Title="Tam basış noktası" Minimum="0.1" Maximum="1" Step="0.01" Format="%" Value="{Binding MaxZone}"
-                             Description="Saç tetik: düşürürsen tetik az basınca tam basılmış sayılır (FPS'te hızlı ateş)." />
+            <local:SliderRow Title="{local:L Deadzone}" Minimum="0" Maximum="0.5" Step="0.01" Format="%" Value="{Binding Deadzone}" Description="{local:L TrigDeadzoneDesc}" />
+            <local:SliderRow Title="{local:L MaxZone}" Minimum="0.1" Maximum="1" Step="0.01" Format="%" Value="{Binding MaxZone}" Description="{local:L MaxZoneDesc}" />
 
             <Border BorderBrush="{StaticResource CardBorder}" BorderThickness="0,1,0,0" Margin="0,12,0,0" Padding="0,12,0,0">
                 <StackPanel>
                     <DockPanel>
-                        <TextBlock DockPanel.Dock="Right" Text="Yalnızca DualSense" Style="{StaticResource Muted}" VerticalAlignment="Center" />
-                        <TextBlock Text="Adaptif tetik" FontWeight="SemiBold" />
+                        <TextBlock DockPanel.Dock="Right" Text="{local:L DualSenseOnly}" Style="{StaticResource Muted}" VerticalAlignment="Center" />
+                        <TextBlock Text="{local:L Adaptive}" FontWeight="SemiBold" />
                     </DockPanel>
                     <WrapPanel Margin="0,10,0,4">
-                        <Button Style="{StaticResource Chip}" Content="Kapalı" Tag="off" Click="Preset_Click" />
-                        <Button Style="{StaticResource Chip}" Content="Tabanca" Tag="pistol" Click="Preset_Click" />
-                        <Button Style="{StaticResource Chip}" Content="Otomatik tüfek" Tag="auto" Click="Preset_Click" />
-                        <Button Style="{StaticResource Chip}" Content="Yay" Tag="bow" Click="Preset_Click" />
-                        <Button Style="{StaticResource Chip}" Content="Fren pedalı" Tag="brake" Click="Preset_Click" />
-                        <Button Style="{StaticResource Chip}" Content="Gaz pedalı" Tag="gas" Click="Preset_Click" />
-                        <Button Style="{StaticResource Chip}" Content="Makineli" Tag="machine" Click="Preset_Click" />
-                        <Button Style="{StaticResource Chip}" Content="At / dörtnala" Tag="gallop" Click="Preset_Click" />
-                        <Button Style="{StaticResource Chip}" Content="Sert direnç" Tag="hard" Click="Preset_Click" />
+                        <Button Style="{StaticResource Chip}" Content="{local:L PrOff}" Tag="off" Click="Preset_Click" />
+                        <Button Style="{StaticResource Chip}" Content="{local:L PrPistol}" Tag="pistol" Click="Preset_Click" />
+                        <Button Style="{StaticResource Chip}" Content="{local:L PrAuto}" Tag="auto" Click="Preset_Click" />
+                        <Button Style="{StaticResource Chip}" Content="{local:L PrBow}" Tag="bow" Click="Preset_Click" />
+                        <Button Style="{StaticResource Chip}" Content="{local:L PrBrake}" Tag="brake" Click="Preset_Click" />
+                        <Button Style="{StaticResource Chip}" Content="{local:L PrGas}" Tag="gas" Click="Preset_Click" />
+                        <Button Style="{StaticResource Chip}" Content="{local:L PrMachine}" Tag="machine" Click="Preset_Click" />
+                        <Button Style="{StaticResource Chip}" Content="{local:L PrGallop}" Tag="gallop" Click="Preset_Click" />
+                        <Button Style="{StaticResource Chip}" Content="{local:L PrHard}" Tag="hard" Click="Preset_Click" />
                     </WrapPanel>
-                    <local:SettingRow Title="Efekt">
+                    <local:SettingRow Title="{local:L Effect}">
                         <ComboBox ItemsSource="{x:Static local:Choices.TriggerKinds}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Effect}" Width="240" />
                     </local:SettingRow>
-                    <local:SliderRow Title="Başlangıç konumu" Minimum="0" Maximum="9" Step="1" Snap="True" Format="0" Value="{Binding Start}" />
-                    <local:SliderRow Title="Bitiş konumu" Minimum="1" Maximum="9" Step="1" Snap="True" Format="0" Value="{Binding End}" />
-                    <local:SliderRow Title="Güç" Minimum="1" Maximum="8" Step="1" Snap="True" Format="0" Value="{Binding Strength}" />
-                    <local:SliderRow Title="Geri tepme / 2. güç" Minimum="1" Maximum="8" Step="1" Snap="True" Format="0" Value="{Binding Snap}"
-                                     Description="Yay'da bırakınca geri tepme gücü, Makine'de ikinci titreşim gücü." />
-                    <local:SliderRow Title="Frekans (Hz)" Minimum="1" Maximum="40" Step="1" Snap="True" Format="0" Value="{Binding Frequency}"
-                                     Description="Titreşim, dörtnala ve makine efektlerinin hızı." />
+                    <local:SliderRow Title="{local:L StartPos}" Minimum="0" Maximum="9" Step="1" Snap="True" Format="0" Value="{Binding Start}" />
+                    <local:SliderRow Title="{local:L EndPos}" Minimum="1" Maximum="9" Step="1" Snap="True" Format="0" Value="{Binding End}" />
+                    <local:SliderRow Title="{local:L Strength}" Minimum="1" Maximum="8" Step="1" Snap="True" Format="0" Value="{Binding Strength}" />
+                    <local:SliderRow Title="{local:L Snap}" Minimum="1" Maximum="8" Step="1" Snap="True" Format="0" Value="{Binding Snap}" Description="{local:L SnapDesc}" />
+                    <local:SliderRow Title="{local:L Frequency}" Minimum="1" Maximum="40" Step="1" Snap="True" Format="0" Value="{Binding Frequency}" Description="{local:L FrequencyDesc}" />
                 </StackPanel>
             </Border>
         </StackPanel>

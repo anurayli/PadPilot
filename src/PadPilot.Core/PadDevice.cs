@@ -12,7 +12,7 @@ public sealed class PadDevice : IDisposable
 {
     const ushort SonyVid = 0x054C;
     const string BluetoothHidGuid = "00001124-0000-1000-8000-00805f9b34fb";
-    static readonly string[] WriteMethods = ["WriteFile", "WriteFile (dolgulu)", "SetOutputReport"];
+    static readonly string[] WriteMethods = ["WriteFile", "WriteFile (padded)", "SetOutputReport"];
 
     readonly SafeFileHandle _read, _write;
     readonly int _inLen, _outLen, _featLen;
@@ -30,7 +30,14 @@ public sealed class PadDevice : IDisposable
     public PadKind Kind { get; }
     public bool Bluetooth { get; }
     public double ReportRateHz { get; private set; }
-    public string OutputStatus { get; private set; } = "Çıkış: henüz gönderilmedi";
+    int _outState = -1, _outError;
+    /// <summary>Cikis (isik/titresim) durumu, gecerli dilde.</summary>
+    public string OutputStatus => _outState switch
+    {
+        -1 => Lang.T("Henüz gönderilmedi", "Not sent yet"),
+        -2 => Lang.T($"Gönderilemedi (Windows hata kodu {_outError})", $"Failed (Windows error {_outError})"),
+        _ => Lang.T($"Çalışıyor ({WriteMethods[_outState]})", $"Working ({WriteMethods[_outState]})"),
+    };
     public string DisplayName => Kind switch
     {
         PadKind.DualSense => "DualSense",
@@ -234,10 +241,10 @@ public sealed class PadDevice : IDisposable
             }
             else ok = HidNative.HidD_SetOutputReport(_write, _outBuf, _outBuf.Length);
 
-            if (ok) { _writeMethod = m; OutputStatus = $"Çıkış: çalışıyor ({WriteMethods[m]})"; return; }
+            if (ok) { _writeMethod = m; _outState = m; return; }
             error = Marshal.GetLastPInvokeError();
         }
-        OutputStatus = $"Çıkış: gönderilemedi (Windows hata kodu {error})";
+        _outError = error; _outState = -2;
     }
 
     public void Dispose()

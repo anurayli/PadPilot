@@ -143,7 +143,7 @@ public sealed class LightSettings : Observable
 
 public sealed class Profile : Observable
 {
-    string _name = "Varsayılan", _exes = "";
+    string _name = Lang.T("Varsayılan", "Default"), _exes = "";
 
     public string Name { get => _name; set => Set(ref _name, value); }
     /// <summary>Bu profili otomatik acan oyunlar, ";" ile ayrilmis (ornek: "eldenring.exe; cyberpunk2077.exe").</summary>
@@ -190,7 +190,10 @@ public sealed class AppSettings : Observable
     OutputKind _output;
     bool _hide, _startup, _startMin, _closeTray = true, _auto = true, _psOpt = true;
     int _lowBat = 20, _idle;
-    string _active = "Varsayılan";
+    string _active = "", _language = "auto";
+
+    /// <summary>"auto" (Windows dili), "tr" veya "en".</summary>
+    public string Language { get => _language; set => Set(ref _language, value); }
 
     public OutputKind Output { get => _output; set => Set(ref _output, value); }
     public bool HideRealPads { get => _hide; set => Set(ref _hide, value); }
@@ -227,6 +230,7 @@ public static class SettingsStore
             try { File.Copy(FilePath, FilePath + ".bozuk", true); } catch { }
         }
         s ??= new AppSettings();
+        Lang.Apply(s.Language);
         if (s.Profiles.Count == 0) s.Profiles.Add(new Profile());
         foreach (var p in s.Profiles) p.Normalize();
         if (s.Profiles.All(p => p.Name != s.ActiveProfile)) s.ActiveProfile = s.Profiles[0].Name;

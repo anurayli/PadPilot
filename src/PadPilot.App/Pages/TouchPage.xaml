@@ -10,27 +10,27 @@
         </Grid.ColumnDefinitions>
         <Border Style="{StaticResource Card}" VerticalAlignment="Top">
             <StackPanel DataContext="{Binding Profile.Touch}">
-                <TextBlock Text="Touchpad" Style="{StaticResource H2}" />
-                <local:SettingRow Title="Kullanım" Description="Fare modunda touchpad tıklaması sol tık olur (Tuşlar sayfasındaki eşleme yok sayılır).">
+                <TextBlock Text="{local:L Touchpad}" Style="{StaticResource H2}" />
+                <local:SettingRow Title="{local:L Usage}" Description="{local:L TouchUseDesc}">
                     <ComboBox ItemsSource="{x:Static local:Choices.TouchModes}" DisplayMemberPath="Label" SelectedValuePath="Value" SelectedValue="{Binding Mode}" Width="230" />
                 </local:SettingRow>
-                <local:SliderRow Title="İmleç hızı" Minimum="0.2" Maximum="3" Step="0.05" Format="x" Value="{Binding Sensitivity}" />
-                <local:SettingRow Title="Dokunarak tıkla" Description="Hafifçe dokunup kaldırmak sol tık yapar.">
+                <local:SliderRow Title="{local:L CursorSpeed}" Minimum="0.2" Maximum="3" Step="0.05" Format="x" Value="{Binding Sensitivity}" />
+                <local:SettingRow Title="{local:L TapClick}" Description="{local:L TapClickDesc}">
                     <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding TapToClick}" />
                 </local:SettingRow>
-                <local:SettingRow Title="İki parmakla kaydır" Description="Sayfa kaydırma (fare tekerleği).">
+                <local:SettingRow Title="{local:L TwoFinger}" Description="{local:L TwoFingerDesc}">
                     <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding TwoFingerScroll}" />
                 </local:SettingRow>
-                <local:SettingRow Title="Sağ yarı = sağ tık" Description="Touchpad'in sağ yarısına basmak sağ tık olur; iki parmakla basmak da sağ tıktır.">
+                <local:SettingRow Title="{local:L Split}" Description="{local:L SplitDesc}">
                     <CheckBox Style="{StaticResource Switch}" IsChecked="{Binding SplitClick}" />
                 </local:SettingRow>
             </StackPanel>
         </Border>
         <Border Grid.Column="2" Style="{StaticResource Card}" VerticalAlignment="Top">
             <StackPanel>
-                <TextBlock Text="Canlı" Style="{StaticResource H2}" />
+                <TextBlock Text="{local:L Live}" Style="{StaticResource H2}" />
                 <local:PadVisual Height="200" State="{Binding SelectedPad.State}" IsDualSense="{Binding SelectedPad.IsDualSense}" Light="{Binding LightColor}" />
-                <TextBlock Style="{StaticResource Muted}" Margin="0,8,0,0" Text="Touchpad'e dokunduğunda parmak konumları beyaz nokta olarak görünür." />
+                <TextBlock Style="{StaticResource Muted}" Margin="0,8,0,0" Text="{local:L LiveDesc}" />
             </StackPanel>
         </Border>
     </Grid>

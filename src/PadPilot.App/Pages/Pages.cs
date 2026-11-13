@@ -32,15 +32,14 @@ public partial class OverviewPage : UserControl
     void Calibrate_Click(object s, RoutedEventArgs e)
     {
         this.Pad()?.Runtime.CalibrateGyro();
-        ActionResult.Text = "Gyro kalibre ediliyor — pad'i 1,5 sn kıpırdatma.";
+        ActionResult.Text = Loc.S("Calibrating");
     }
 
     void Disconnect_Click(object s, RoutedEventArgs e)
     {
         var p = this.Pad();
         if (p == null) return;
-        ActionResult.Text = !p.Device.Bluetooth ? "Kablolu pad kapatılamaz; kabloyu çıkarman yeterli."
-            : p.Device.DisconnectBluetooth() ? "Pad kapatıldı." : "Kapatılamadı (Bluetooth adresi okunamadı).";
+        ActionResult.Text = Loc.S(!p.Device.Bluetooth ? "WiredNoOff" : p.Device.DisconnectBluetooth() ? "TurnedOff" : "TurnOffFailed");
     }
 
     void OpenBluetooth_Click(object s, RoutedEventArgs e) =>
@@ -201,14 +200,14 @@ public partial class ProfilesPage : UserControl
     void Duplicate_Click(object s, RoutedEventArgs e) => this.Vm().DuplicateProfile();
     void Reset_Click(object s, RoutedEventArgs e)
     {
-        if (MessageBox.Show($"“{this.Vm().Profile.Name}” profilinin tüm ayarları varsayılana dönsün mü?", "PadPilot", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+        if (MessageBox.Show(string.Format(Loc.S("ConfirmReset"), this.Vm().Profile.Name), "PadPilot", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             this.Vm().ResetProfile();
     }
     void Delete_Click(object s, RoutedEventArgs e)
     {
         var vm = this.Vm();
-        if (vm.Settings.Profiles.Count <= 1) { MessageBox.Show("Son profil silinemez.", "PadPilot"); return; }
-        if (MessageBox.Show($"“{vm.Profile.Name}” silinsin mi?", "PadPilot", MessageBoxButton.YesNo) == MessageBoxResult.Yes) vm.DeleteProfile();
+        if (vm.Settings.Profiles.Count <= 1) { MessageBox.Show(Loc.S("LastProfile"), "PadPilot"); return; }
+        if (MessageBox.Show(string.Format(Loc.S("ConfirmDelete"), vm.Profile.Name), "PadPilot", MessageBoxButton.YesNo) == MessageBoxResult.Yes) vm.DeleteProfile();
     }
     void Rename_Click(object s, RoutedEventArgs e) =>
         RenameError.Visibility = this.Vm().RenameProfile(NameBox.Text) ? Visibility.Collapsed : Visibility.Visible;
@@ -228,15 +227,14 @@ public partial class SettingsPage : UserControl
         if (!HidHide.Installed)
         {
             HideSwitch.IsChecked = false;
-            HideResult.Text = "HidHide kurulu değil. github.com/nefarius/HidHide adresinden kurabilirsin.";
+            HideResult.Text = Loc.S("HidHideNotInstalled");
             return;
         }
-        HideResult.Text = "Yönetici onayı bekleniyor…";
+        HideResult.Text = Loc.S("WaitingUac");
         bool ok = await vm.Engine.ApplyHidHideAsync(want);
         if (ok) vm.Settings.HideRealPads = want;
         HideSwitch.IsChecked = vm.Settings.HideRealPads;
-        HideResult.Text = ok ? (want ? "Gerçek pad oyunlardan gizlendi. Oyunu yeniden başlatman gerekebilir." : "Gizleme kaldırıldı.")
-            : "Uygulanamadı (onay verilmedi ya da HidHide hata verdi).";
+        HideResult.Text = Loc.S(ok ? (want ? "Hidden" : "Unhidden") : "HideFailed");
     }
 
     void Startup_Click(object s, RoutedEventArgs e)

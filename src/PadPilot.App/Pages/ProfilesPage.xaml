@@ -11,7 +11,7 @@
 
         <Border Style="{StaticResource Card}" VerticalAlignment="Top" Padding="10,14">
             <StackPanel>
-                <TextBlock Text="Profiller" Style="{StaticResource H2}" Margin="10,0,0,8" />
+                <TextBlock Text="{local:L Profiles}" Style="{StaticResource H2}" Margin="10,0,0,8" />
                 <ListBox ItemsSource="{Binding Profiles}" SelectedItem="{Binding SelectedProfile}" Background="Transparent" BorderThickness="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -23,8 +23,8 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
                 <WrapPanel Margin="8,12,0,0">
-                    <Button Style="{StaticResource Chip}" Content="Yeni" Click="New_Click" />
-                    <Button Style="{StaticResource Chip}" Content="Kopyala" Click="Duplicate_Click" />
+                    <Button Style="{StaticResource Chip}" Content="{local:L New}" Click="New_Click" />
+                    <Button Style="{StaticResource Chip}" Content="{local:L Copy}" Click="Duplicate_Click" />
                 </WrapPanel>
             </StackPanel>
         </Border>
@@ -32,17 +32,17 @@
         <StackPanel Grid.Column="2">
             <Border Style="{StaticResource Card}">
                 <StackPanel>
-                    <TextBlock Text="Seçili profil" Style="{StaticResource H2}" />
-                    <local:SettingRow Title="Ad">
+                    <TextBlock Text="{local:L Selected}" Style="{StaticResource H2}" />
+                    <local:SettingRow Title="{local:L Name}">
                         <StackPanel Orientation="Horizontal">
                             <TextBox x:Name="NameBox" Width="220" Text="{Binding Profile.Name, Mode=OneWay}" KeyDown="NameBox_KeyDown" />
-                            <Button Content="Kaydet" Margin="8,0,0,0" Click="Rename_Click" />
+                            <Button Content="{local:L Save}" Margin="8,0,0,0" Click="Rename_Click" />
                         </StackPanel>
                     </local:SettingRow>
-                    <TextBlock x:Name="RenameError" Foreground="{StaticResource Bad}" FontSize="12.5" Visibility="Collapsed" Text="Bu ad boş ya da başka bir profilde kullanılıyor." />
+                    <TextBlock x:Name="RenameError" Foreground="{StaticResource Bad}" FontSize="12.5" Visibility="Collapsed" Text="{local:L NameError}" />
                     <WrapPanel Margin="0,10,0,0">
-                        <Button Style="{StaticResource Chip}" Content="Varsayılan ayarlara sıfırla" Click="Reset_Click" />
-                        <Button Style="{StaticResource Chip}" Content="Profili sil" Click="Delete_Click" Foreground="{StaticResource Bad}" />
+                        <Button Style="{StaticResource Chip}" Content="{local:L ResetProfile}" Click="Reset_Click" />
+                        <Button Style="{StaticResource Chip}" Content="{local:L DeleteProfile}" Click="Delete_Click" Foreground="{StaticResource Bad}" />
                     </WrapPanel>
                 </StackPanel>
             </Border>
@@ -51,13 +51,12 @@
                 <StackPanel>
                     <DockPanel>
                         <CheckBox DockPanel.Dock="Right" Style="{StaticResource Switch}" IsChecked="{Binding Settings.AutoProfile}" VerticalAlignment="Center" />
-                        <TextBlock Text="Oyuna göre otomatik profil" Style="{StaticResource H2}" Margin="0" />
+                        <TextBlock Text="{local:L AutoProfile}" Style="{StaticResource H2}" Margin="0" />
                     </DockPanel>
-                    <TextBlock Style="{StaticResource Muted}" Margin="0,6,0,10"
-                               Text="Aşağıdaki programlardan biri öndeyken bu profil kendiliğinden devreye girer; oyundan çıkınca seçtiğin profile dönülür." />
+                    <TextBlock Style="{StaticResource Muted}" Margin="0,6,0,10" Text="{local:L AutoProfileDesc}" />
                     <TextBox Text="{Binding Profile.Exes, UpdateSourceTrigger=PropertyChanged}" FontFamily="Cascadia Mono, Consolas" />
-                    <TextBlock Style="{StaticResource Muted}" Margin="0,4,0,12" Text="Birden fazlaysa noktalı virgülle ayır. Örnek: eldenring.exe; Cyberpunk2077.exe" />
-                    <TextBlock Text="Son açılan programlar (eklemek için tıkla)" FontWeight="SemiBold" FontSize="13" Margin="0,0,0,8" />
+                    <TextBlock Style="{StaticResource Muted}" Margin="0,4,0,12" Text="{local:L ExesHint}" />
+                    <TextBlock Text="{local:L Recent}" FontWeight="SemiBold" FontSize="13" Margin="0,0,0,8" />
                     <ItemsControl ItemsSource="{Binding RecentExes}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate><WrapPanel /></ItemsPanelTemplate>
