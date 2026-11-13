@@ -75,3 +75,9 @@ Aşama 2 kodu yazıldı. Derleme temiz, 17/17 test geçiyor, tüm sayfaların ek
 - Sürüm v1.0.0: Releases'ta PadPilot-Setup-1.0.0.exe (ViGEmBus + HidHide dahil)
 - Yeni kurulum dosyası: installer\build.ps1 -Version x.y.z, sonra gh release create
 - Arayüz Türkçe/İngilizce (src\PadPilot.App\Strings.cs)
+
+## 1.1.0 (13 Kasım 2026)
+- Hakkında (Geliştirici: Ali Nuraylı) ve geri bildirim formu: FormSubmit -> alinuraylii@gmail.com (aktive edildi, test maili ulaştı)
+- macOS: mac/ (SwiftUI + GameController), .github/workflows/macos.yml macos-latest'te derler, açılış testi yapar, release yayımlanınca .dmg'yi ekler
+- Yeni sürüm: Version'ı güncelle, installer\build.ps1 -Version x.y.z, gh release create vx.y.z <exe> -> Mac dmg otomatik eklenir
+- Mac sürümü gerçek pad ve gerçek Mac'te henüz denenmedi
