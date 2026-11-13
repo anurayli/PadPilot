@@ -236,6 +236,23 @@ public static class Loc
         ["HidHideName"] = ("HidHide (gizleme sürücüsü)", "HidHide (hiding driver)"),
         ["OpenFolder"] = ("Ayar klasörünü aç", "Open settings folder"),
 
+        // Geri bildirim / hakkinda
+        ["Feedback"] = ("Geri bildirim", "Feedback"),
+        ["FeedbackDesc"] = ("Hata, öneri ya da istek… Yazdığın mesaj doğrudan geliştiriciye e-posta olarak gider.", "Bug, idea or request… Your message is emailed straight to the developer."),
+        ["FeedbackPlaceholder"] = ("Mesajını buraya yaz…", "Write your message here…"),
+        ["FeedbackEmail"] = ("E-posta adresin (isteğe bağlı, yanıt için)", "Your email (optional, for a reply)"),
+        ["Send"] = ("Gönder", "Send"),
+        ["Sending"] = ("Gönderiliyor…", "Sending…"),
+        ["Sent"] = ("Teşekkürler! Mesajın gönderildi.", "Thanks! Your message has been sent."),
+        ["SendFailed"] = ("Gönderilemedi: {0}", "Couldn't send: {0}"),
+        ["EmptyMessage"] = ("Önce bir mesaj yaz.", "Write a message first."),
+        ["About"] = ("Hakkında", "About"),
+        ["Version"] = ("Sürüm", "Version"),
+        ["Developer"] = ("Geliştirici", "Developer"),
+        ["OpenGitHub"] = ("GitHub sayfası", "GitHub page"),
+        ["CheckUpdates"] = ("Yeni sürümler", "Releases"),
+        ["LicenseMit"] = ("Açık kaynak, MIT lisansı. Sony veya Microsoft ile bağlantılı değildir.", "Open source, MIT license. Not affiliated with Sony or Microsoft."),
+
         // Canli metinler
         ["Player"] = ("Oyuncu", "Player"),
         ["NoBattery"] = ("Pil bilgisi yok (basit mod)", "No battery info (basic mode)"),

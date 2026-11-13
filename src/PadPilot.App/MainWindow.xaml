@@ -15,7 +15,7 @@
         <Border Background="{StaticResource Sidebar}" BorderBrush="{StaticResource CardBorder}" BorderThickness="0,0,1,0">
             <DockPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="20,22,20,20">
-                    <Image Source="padpilot.ico" Width="32" Height="32" />
+                    <Image Source="/icon-256.png" Width="32" Height="32" />
                     <StackPanel Margin="11,0,0,0" VerticalAlignment="Center">
                         <TextBlock Text="PadPilot" FontSize="18" FontWeight="SemiBold" />
                         <TextBlock Text="{local:L Tagline}" Style="{StaticResource Muted}" FontSize="11.5" />

@@ -1,0 +1,40 @@
+name: macOS
+
+on:
+  push:
+    branches: [main]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_15.4.app || true
+
+      - name: Build app and dmg
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            VERSION="${{ github.event.release.tag_name }}"; VERSION="${VERSION#v}"
+          else
+            VERSION="0.0.0-dev"
+          fi
+          bash mac/build.sh "$VERSION"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PadPilot-mac
+          path: mac/dist/*.dmg
+
+      - name: Attach to release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name }}" mac/dist/*.dmg --clobber

@@ -9,7 +9,7 @@
     <AssemblyName>PadPilot</AssemblyName>
     <RootNamespace>PadPilot.App</RootNamespace>
     <ApplicationIcon>padpilot.ico</ApplicationIcon>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Product>PadPilot</Product>
     <Description>PS4 / PS5 controller hub for Windows</Description>
     <NoWarn>$(NoWarn);WPF0001</NoWarn>
@@ -19,7 +19,7 @@
     <Using Remove="System.Drawing" /><Using Include="System.IO" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="padpilot.ico" />
+    <Resource Include="padpilot.ico" /><Resource Include="icon-256.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PadPilot.Core\PadPilot.Core.csproj" />

@@ -217,7 +217,35 @@ public partial class ProfilesPage : UserControl
 
 public partial class SettingsPage : UserControl
 {
-    public SettingsPage() => InitializeComponent();
+    public SettingsPage()
+    {
+        InitializeComponent();
+        var v = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version;
+        VersionRun.Text = v == null ? "" : $"{v.Major}.{v.Minor}.{v.Build}";
+    }
+
+    void Feedback_TextChanged(object s, TextChangedEventArgs e)
+    {
+        FeedbackHint.Visibility = FeedbackBox.Text.Length == 0 ? Visibility.Visible : Visibility.Collapsed;
+        EmailHint.Visibility = FeedbackEmail.Text.Length == 0 ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    async void SendFeedback_Click(object s, RoutedEventArgs e)
+    {
+        FeedbackResult.Visibility = Visibility.Visible;
+        if (FeedbackBox.Text.Trim().Length == 0) { FeedbackResult.Text = Loc.S("EmptyMessage"); return; }
+        SendButton.IsEnabled = false;
+        FeedbackResult.Text = Loc.S("Sending");
+        var (ok, err) = await Feedback.SendAsync(FeedbackBox.Text.Trim(), FeedbackEmail.Text, "Windows", VersionRun.Text);
+        SendButton.IsEnabled = true;
+        if (ok) { FeedbackResult.Text = Loc.S("Sent"); FeedbackBox.Clear(); }
+        else FeedbackResult.Text = string.Format(Loc.S("SendFailed"), err);
+    }
+
+    void OpenUrl_Click(object s, RoutedEventArgs e)
+    {
+        if ((s as FrameworkElement)?.Tag is string url) Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+    }
 
     async void Hide_Click(object s, RoutedEventArgs e)
     {
