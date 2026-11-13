@@ -39,6 +39,16 @@ Pad'i bağlarsın, kendiliğinden tanınır ve oyunlarda Xbox 360 (veya DualShoc
 
 Gereksinim: Windows 10 (1809) veya Windows 11, 64 bit. .NET kurmana gerek yok.
 
+### macOS
+1. [Releases](../../releases/latest) sayfasından `PadPilot-x.y.z-mac.dmg` dosyasını indir, PadPilot'u **Uygulamalar** klasörüne sürükle.
+2. Uygulama imzasız olduğu için ilk açılışta **sağ tık → Aç → Aç** de (veya Sistem Ayarları → Gizlilik ve Güvenlik → “Yine de Aç”).
+3. Tuş eşleme, analog/gyro/touchpad ile fare için **Erişilebilirlik** izni ver (uygulama yönlendirir).
+
+macOS 13 veya üstü; Apple Silicon ve Intel. macOS pad'i oyunlara zaten kendisi tanıttığı için sanal pad sürücüsüne gerek yoktur; Mac sürümü ışık, adaptif tetik, titreşim testi, tuş→klavye/fare, gyro ve touchpad ile fare, profiller ve geri bildirim sunar.
+
+### Geri bildirim
+Uygulamada **Ayarlar → Geri bildirim** kutusuna yazıp Gönder'e basman yeterli; mesaj doğrudan geliştiriciye ulaşır.
+
 > Kullanırken DS4Windows, DSX gibi diğer pad uygulamalarını kapat; aynı anda çalışırlarsa birbirlerini bozar.
 
 ### Kaynaktan derleme
@@ -78,6 +88,16 @@ Connect your controller: it is detected automatically and shows up in games as a
 
 Requirements: Windows 10 (1809) or Windows 11, 64-bit. No separate .NET install needed.
 
+### macOS
+1. Download `PadPilot-x.y.z-mac.dmg` from [Releases](../../releases/latest) and drag PadPilot into **Applications**.
+2. The app is unsigned: on first launch **right-click → Open → Open** (or System Settings → Privacy & Security → “Open Anyway”).
+3. Grant **Accessibility** permission for button mapping and stick/gyro/touchpad mouse (the app guides you).
+
+macOS 13 or later, Apple Silicon and Intel. macOS already exposes the controller to games natively, so no virtual pad driver is needed; the Mac version provides lightbar, adaptive triggers, rumble test, button→keyboard/mouse, gyro and touchpad mouse, profiles and feedback.
+
+### Feedback
+In the app, go to **Settings → Feedback**, type your message and press Send — it goes straight to the developer.
+
 > Close other controller apps such as DS4Windows or DSX while using PadPilot; running them together causes conflicts.
 
 ### Building from source
@@ -90,6 +110,8 @@ powershell -ExecutionPolicy Bypass -File installer\build.ps1   # installer (requ
 ---
 
 ## License / Lisans
+Developer / Geliştirici: **Ali Nuraylı**
+
 MIT — see [LICENSE](LICENSE). Bundled drivers and libraries: [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
 
 PadPilot is not affiliated with Sony Interactive Entertainment or Microsoft. PlayStation, DualShock and DualSense are trademarks of Sony Interactive Entertainment Inc.
