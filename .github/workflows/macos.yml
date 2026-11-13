@@ -28,10 +28,20 @@ jobs:
           fi
           bash mac/build.sh "$VERSION"
 
+      - name: Smoke test (launch + screenshot)
+        run: |
+          open mac/dist/PadPilot.app
+          sleep 8
+          pgrep -x PadPilot
+          screencapture -x mac/dist/screenshot.png || true
+          pkill -x PadPilot || true
+
       - uses: actions/upload-artifact@v4
         with:
           name: PadPilot-mac
-          path: mac/dist/*.dmg
+          path: |
+            mac/dist/*.dmg
+            mac/dist/screenshot.png
 
       - name: Attach to release
         if: github.event_name == 'release'
